@@ -20,15 +20,6 @@ const messageSchema = new Schema({
     trim: true,
     maxlength: 2000
   },
-  // Вложения (фото, документы)
-  attachments: [{
-    url: String,
-    type: {
-      type: String,
-      enum: ['image', 'video', 'document'],
-      default: 'image'
-    }
-  }],
 
   isRead: {
     type: Boolean,
