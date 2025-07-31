@@ -1,0 +1,19 @@
+{
+  "name": "brunoyam-project-1",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LogicZepochka/brunoyam-project01.git"
+  },
+  "author": "logzep",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LogicZepochka/brunoyam-project01/issues"
+  },
+  "homepage": "https://github.com/LogicZepochka/brunoyam-project01#readme",
+  "description": ""
+}
