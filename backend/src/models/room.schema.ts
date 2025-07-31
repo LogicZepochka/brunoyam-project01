@@ -73,4 +73,6 @@ roomSchema.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model('Room', roomSchema);
+const RoomModel = mongoose.model('Room', roomSchema);
+
+export default RoomModel

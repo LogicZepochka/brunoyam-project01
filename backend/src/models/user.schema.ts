@@ -1,12 +1,9 @@
 
 import mongoose, { Schema } from "mongoose";
 import * as argon2 from "argon2";
+import { userRoles } from "../repositories/types";
 
-const userRoles = {
-  USER: 'Пользователь',
-  BUSINESS: 'Предприятие',
-  ADMIN: 'Администратор'
-};
+
 
 const UserSchema = new Schema({
   name: {
@@ -44,9 +41,6 @@ UserSchema.methods.comparePassword = async function(candidatePassword: string) {
   return argon2.verify(this.password, candidatePassword);
 };
 
+const UserModel = mongoose.model('User', UserSchema)
 
-
-export default {
-  User: mongoose.model('User', UserSchema),
-  userRoles
-};
+export default UserModel

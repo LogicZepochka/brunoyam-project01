@@ -46,4 +46,6 @@ messageSchema.post('save', async function(doc) {
   });
 });
 
-export default mongoose.model('Message', messageSchema);
+const MessageModel = mongoose.model('Message', messageSchema);
+
+export default MessageModel

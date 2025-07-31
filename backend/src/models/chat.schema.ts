@@ -43,4 +43,6 @@ chatSchema.index({ participants: 1 });
 chatSchema.index({ property: 1 });
 chatSchema.index({ lastMessage: 1 });
 
-export default mongoose.model('Chat', chatSchema);
+const ChatModel = mongoose.model('Chat', chatSchema);
+
+export default ChatModel;
