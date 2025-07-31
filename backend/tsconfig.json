@@ -112,7 +112,7 @@
   },
   "include": [
     "src"
-    ],
+, "src/models/chat/.schema.ts"    ],
     "exclude": [
       "node_modules",
       "dist"
