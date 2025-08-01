@@ -7,6 +7,7 @@ export interface UserRepository {
     updateUser(id: string, Data: Partial<User>): Promise<void>
     deleteUser(id: string): Promise<boolean>
     getUser(id: string): Promise<User | null>
+    findBy(data: Partial<User>): Promise<User | null>
 
     end(): void;
 }

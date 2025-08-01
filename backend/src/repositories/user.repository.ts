@@ -18,10 +18,28 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             process.exit(0)
         })
     }
+    async findBy(data: Partial<User>): Promise<User | null> {
+        const result = await UserModel.findOne({
+            data
+        })
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.password,
+            lastLogin: result?.lastLogin,
+            role: result?.role,
+            phone: result?.phone
+        }
+
+    }
     
     [Symbol.dispose](): void {
         this.end();
     }
+
     end(): void {
         mongoose.disconnect()
     }
@@ -38,7 +56,8 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             name: result?.name,
             email: result?.password,
             lastLogin: result?.lastLogin,
-            role: result?.role
+            role: result?.role,
+            phone: result?.phone
         };
     }
 
