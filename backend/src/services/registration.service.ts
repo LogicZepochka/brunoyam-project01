@@ -5,7 +5,7 @@ import { UserRepository } from "../repositories/user.reposiotory.interface";
 import * as argon2 from "argon2"
 
 
-export default class RegistrationService implements Disposable {
+export default class RegistrationService {
 
     private repo: UserRepository
     private log = CreateLogger("RegistrationService")
@@ -15,15 +15,12 @@ export default class RegistrationService implements Disposable {
         this.log("Created RegistrationService instance",LogLevel.Debug)
     }
 
-    [Symbol.dispose](): void {
-        this.repo.end();
-        this.log("Destroyed RegistrationService instance",LogLevel.Debug)
-    }
-
         async RegisterUser(data: RegistrationDataDTO): Promise<boolean> {
             try {
-                let result = this.repo.createUser({
-                    ...data,
+                let result = await this.repo.createUser({
+                    name: data.name,
+                    phone: data.phone,
+                    email: data.email,
                     password: await argon2.hash(data.password)
                 });
                 this.log(`New user registered: ${result !== null}`,LogLevel.Debug)
@@ -38,7 +35,8 @@ export default class RegistrationService implements Disposable {
 
         async IsEmailFree(email: string): Promise<boolean> {
             try {
-                let result = await this.repo.findBy({email: email})
+                let result = await this.repo.findByEmail(email)
+                this.log(`Search user with email result: ${result}`,LogLevel.Debug)
                 return result === null;
             }
             catch(e) {
@@ -51,8 +49,9 @@ export default class RegistrationService implements Disposable {
 
         async isPhoneFree(phone: string): Promise<boolean> {
             try {
-                let result = await this.repo.findBy({phone: phone})
-            return result === null;
+                let result = await this.repo.findByPhone(phone)
+                this.log(`Search user with phone result: ${result}`,LogLevel.Debug)
+                return result === null;
             }
             catch(e) {
                 this.log(`Failed to search user with phone:`,LogLevel.Error)
