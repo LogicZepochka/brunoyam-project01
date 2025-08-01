@@ -16,6 +16,7 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "mongoose": "^8.17.0",
+    "nodemailer": "^7.0.5",
     "zod": "^4.0.14"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "@types/jest": "^30.0.0",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^24.1.0",
+    "@types/nodemailer": "^6.4.17",
     "jest": "^30.0.5",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
