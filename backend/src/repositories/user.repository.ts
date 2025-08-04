@@ -29,7 +29,8 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result?._id.toString(),
             name: result?.name,
-            email: result?.password,
+            email: result?.email,
+            password: result?.password,
             lastLogin: result?.lastLogin,
             role: result?.role,
             phone: result?.phone
@@ -46,8 +47,9 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result?._id.toString(),
             name: result?.name,
-            email: result?.password,
+            email: result?.email,
             lastLogin: result?.lastLogin,
+            password: result?.password,
             role: result?.role,
             phone: result?.phone
         }

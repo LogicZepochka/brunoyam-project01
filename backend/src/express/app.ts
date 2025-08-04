@@ -8,6 +8,7 @@ import { registrationRouter } from "../routers/registration.router";
 import session from "express-session";
 import { AppConfig } from "../config/config";
 import MongoStore from "connect-mongo";
+import { authorizationRouter } from "../routers/authorization.router";
 
 const app = express();
 const logger = CreateLogger("express");
@@ -25,7 +26,8 @@ app.use(session({
     
     store: MongoStore.create({
         mongoUrl: AppConfig.Mongo.connectionString
-    })
+    }),
+    saveUninitialized: true
 }))
 
 app.use(cors({origin: allowedHosts}));
@@ -36,6 +38,7 @@ app.use(helmet());
 
 // Routers
 app.use("/",registrationRouter())
+app.use("/",authorizationRouter())
 
 logger("Express creation finished",LogLevel.Debug)
 export default app;
