@@ -1,9 +1,16 @@
 import CreateLogger, { LogLevel } from "../etc/logger";
 import { User } from "../repositories/types";
+import { UserRepository } from "../repositories/user.reposiotory.interface";
 import MongooseUserRepository from "../repositories/user.repository";
 
 
 export default class UserService {
+
+    private repo: UserRepository
+
+    constructor(userRepository: UserRepository) {
+        this.repo = userRepository
+    }
 
     async getUser(_id: string) {
         try {
@@ -17,7 +24,6 @@ export default class UserService {
         }
     }
 
-    private repo = new MongooseUserRepository();
     private logger = CreateLogger("UserService")
 
     async createUser(user: User): Promise<User | null> {

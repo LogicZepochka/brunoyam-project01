@@ -73,7 +73,7 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result?._id.toString(),
             name: result?.name,
-            email: result?.password,
+            email: result?.email,
             lastLogin: result?.lastLogin,
             role: result?.role,
             phone: result?.phone
