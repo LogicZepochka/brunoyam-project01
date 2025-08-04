@@ -34,7 +34,7 @@ export default class UserController {
             }
             else {
                 res.status(200).json(
-                    new APIAnswer(200).setContent(new UserDTO(user))
+                    new APIAnswer(200).setContent(new UserDTO(user,false))
                 )
             }
         }
