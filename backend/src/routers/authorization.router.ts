@@ -4,12 +4,12 @@ import MongooseUserRepository from "../repositories/user.repository";
 import RegistrationController from "../controllers/registration.controller";
 import AuthorizationController from "../controllers/authorization.controller";
 import AuthorizationService from "../services/authorization.service";
+import { MainUserRepository } from "../const";
 
 
 
 const router = Router();
-const userRepository = new MongooseUserRepository();
-const authorizationService = new AuthorizationService(userRepository);
+const authorizationService = new AuthorizationService(MainUserRepository);
 const authorizationController = new AuthorizationController(authorizationService);
 
 export const authorizationRouter = () => {

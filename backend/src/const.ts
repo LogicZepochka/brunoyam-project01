@@ -1,3 +1,5 @@
+import { UserRepository } from "./repositories/user.reposiotory.interface";
+import MongooseUserRepository from "./repositories/user.repository";
 
  
 export const allowedHosts = [
@@ -11,3 +13,7 @@ declare module 'express-session' {
     views?: number;
   }
 }
+
+const MainUserRepository: UserRepository = new MongooseUserRepository();
+
+export { MainUserRepository }
