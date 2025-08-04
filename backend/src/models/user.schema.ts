@@ -15,6 +15,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  phone: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/^\+7\d{10}$/, 'Номер должен начинаться с +7 и содержать 10 цифр после']
+  },
   email: {
     type: String,
     required: true,

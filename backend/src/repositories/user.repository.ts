@@ -18,10 +18,47 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             process.exit(0)
         })
     }
+
+    async findByEmail(email: string): Promise<User | null> {
+        const result = await UserModel.findOne({
+            email: email
+        })
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            password: result?.password,
+            lastLogin: result?.lastLogin,
+            role: result?.role,
+            phone: result?.phone
+        }
+
+    }
+    async findByPhone(phone: string): Promise<User | null> {
+        const result = await UserModel.findOne({
+            phone: phone
+        })
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            lastLogin: result?.lastLogin,
+            password: result?.password,
+            role: result?.role,
+            phone: result?.phone
+        }
+    }
     
     [Symbol.dispose](): void {
         this.end();
     }
+
     end(): void {
         mongoose.disconnect()
     }
@@ -36,9 +73,10 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result?._id.toString(),
             name: result?.name,
-            email: result?.password,
+            email: result?.email,
             lastLogin: result?.lastLogin,
-            role: result?.role
+            role: result?.role,
+            phone: result?.phone
         };
     }
 
@@ -47,7 +85,8 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             {
                 name: newUser.name,
                 password: newUser.password,
-                email: newUser.email
+                email: newUser.email,
+                phone: newUser.phone
             }
         )
         return {
