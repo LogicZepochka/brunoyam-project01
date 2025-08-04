@@ -15,3 +15,16 @@ export interface User {
     lastLogin?: Date,
     role?: userRoles
 }
+
+export interface Room {
+    _id?: string,
+    title?: string,
+    address?: string,
+    price?: number,
+    images?: string[],
+    area?: number,
+    shortDescription?: string,
+    fullDescription?: string,
+    owner?: User,
+    createdAt?: Date
+}
