@@ -20,7 +20,7 @@ app.use(session({
     secret: AppConfig.Security.Sessions.Secret,
     resave: false,
     cookie: {
-        secure: true,
+        secure: AppConfig.Env !== "dev",
         maxAge: 3600000
     },
     
