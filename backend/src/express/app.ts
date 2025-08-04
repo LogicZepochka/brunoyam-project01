@@ -7,6 +7,7 @@ import RegistrationController from "../controllers/registration.controller";
 import { registrationRouter } from "../routers/registration.router";
 import session from "express-session";
 import { AppConfig } from "../config/config";
+import MongoStore from "connect-mongo";
 
 const app = express();
 const logger = CreateLogger("express");
@@ -20,7 +21,11 @@ app.use(session({
     cookie: {
         secure: true,
         maxAge: 3600000
-    }
+    },
+    
+    store: MongoStore.create({
+        mongoUrl: AppConfig.Mongo.connectionString
+    })
 }))
 
 app.use(cors({origin: allowedHosts}));
