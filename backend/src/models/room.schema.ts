@@ -18,13 +18,7 @@ const roomSchema = new Schema({
     min: 0
   },
   images: [{
-    type: String, // URL фотографий
-    validate: {
-      validator: function(url: string) {
-        return /^(http|https):\/\/[^ "]+$/.test(url);
-      },
-      message: (props: { value: any; }) => `${props.value} не является валидным URL изображения!`
-    }
+    type: String
   }],
   area: {
     type: Number,

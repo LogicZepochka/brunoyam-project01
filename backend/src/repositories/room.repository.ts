@@ -4,6 +4,8 @@ import CreateLogger, { LogLevel } from "../etc/logger";
 import { RoomRepository } from "./room.repository.interface";
 import { Room } from "./types";
 import RoomModel from "../models/room.schema";
+import ApiException from "../etc/ApiError";
+import { ApiError } from "../builders/api/errors.enum";
 
 
 export default class MongooseRoomRepository implements RoomRepository {
@@ -20,6 +22,9 @@ export default class MongooseRoomRepository implements RoomRepository {
     }
 
     async createRoom(newRoom: Room,ownerId: string): Promise<Room | null> {
+        if(!newRoom.images || newRoom.images.length <= 0) {
+            throw new ApiException("Empty images",ApiError.InvalidInput)
+        }
         let result = await RoomModel.create(
             {
                 title: newRoom.title,

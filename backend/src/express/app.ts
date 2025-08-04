@@ -10,6 +10,7 @@ import { AppConfig } from "../config/config";
 import MongoStore from "connect-mongo";
 import { authorizationRouter } from "../routers/authorization.router";
 import { userRouter } from "../routers/user.router";
+import { roomRouter } from "../routers/room.router";
 
 const app = express();
 const logger = CreateLogger("express");
@@ -41,6 +42,7 @@ app.use(helmet());
 app.use("/",registrationRouter())
 app.use("/",authorizationRouter())
 app.use("/user",userRouter())
+app.use("/room",roomRouter())
 
 logger("Express creation finished",LogLevel.Debug)
 export default app;

@@ -23,8 +23,9 @@ export default class RoomService {
         }
     }
 
-    async createUser(user: Room,ownerId: string): Promise<Room | null> {
+    async createRoom(user: Room,ownerId: string): Promise<Room | null> {
         try {
+            console.log(user);
             let result = await this.repo.createRoom(user,ownerId);
             this.logger(`Created new room ${result?.title} with id ${result?._id} (Owner: ${ownerId})`,LogLevel.Debug)
             return result;
@@ -36,7 +37,7 @@ export default class RoomService {
     }
 
 
-    async updateUser(id: string,data: Partial<User>): Promise<boolean> {
+    async updateRoom(id: string,data: Partial<User>): Promise<boolean> {
         try {
             await this.repo.updateRoom(id,data);
             this.logger(`Update room with id ${id}`,LogLevel.Debug)

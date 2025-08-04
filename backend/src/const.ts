@@ -1,3 +1,5 @@
+import MongooseRoomRepository from "./repositories/room.repository";
+import { RoomRepository } from "./repositories/room.repository.interface";
 import { UserRepository } from "./repositories/user.reposiotory.interface";
 import MongooseUserRepository from "./repositories/user.repository";
 
@@ -15,5 +17,6 @@ declare module 'express-session' {
 }
 
 const MainUserRepository: UserRepository = new MongooseUserRepository();
+const MainRoomRepository: RoomRepository = new MongooseRoomRepository();
 
-export { MainUserRepository }
+export { MainUserRepository, MainRoomRepository }
