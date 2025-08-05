@@ -1,12 +1,5 @@
 import { Router } from "express"
-import RegistrationService from "../services/registration.service";
-import MongooseUserRepository from "../repositories/user.repository";
-import RegistrationController from "../controllers/registration.controller";
-import AuthorizationController from "../controllers/authorization.controller";
-import AuthorizationService from "../services/authorization.service";
 import { MainRoomRepository, MainUserRepository } from "../const";
-import UserService from "../services/user.service";
-import UserController from "../controllers/user.controller";
 import ProtectedRoute from "../middleware/ProtectedRoute";
 import RoomService from "../services/room.service";
 import RoomController from "../controllers/room.controller";
