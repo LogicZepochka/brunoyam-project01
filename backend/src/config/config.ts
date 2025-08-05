@@ -8,7 +8,8 @@ dotenv.config({quiet: true});
 
 interface AppConfig {
     Express: {
-        Port: number
+        Port: number,
+        DefaultApiURL: string
     },
     Env: "production" | "dev" | string,
     Mongo: {
@@ -25,7 +26,8 @@ interface AppConfig {
 
 const AppConfig: AppConfig = {
     Express: {
-        Port: Number(process.env.EXPRESS_PORT) || 3000
+        Port: Number(process.env.EXPRESS_PORT) || 3000,
+        DefaultApiURL: process.env.DEFAULT_URL || "http://localhost:3000/"
     },
     Env: process.env.NODE_ENV || "dev",
     Mongo: {
