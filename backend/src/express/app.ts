@@ -11,6 +11,7 @@ import MongoStore from "connect-mongo";
 import { authorizationRouter } from "../routers/authorization.router";
 import { userRouter } from "../routers/user.router";
 import { roomRouter } from "../routers/room.router";
+import { imageRouter } from "../routers/image.router";
 
 const app = express();
 const logger = CreateLogger("express");
@@ -43,6 +44,8 @@ app.use("/",registrationRouter())
 app.use("/",authorizationRouter())
 app.use("/user",userRouter())
 app.use("/room",roomRouter())
+app.use("/images",imageRouter())
+
 
 logger("Express creation finished",LogLevel.Debug)
 export default app;
