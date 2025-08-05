@@ -12,7 +12,8 @@ export const allowedHosts = [
 declare module 'express-session' {
   interface SessionData {
     user: { id: string; username: string; email: string };
-    views?: number;
+    views: string[];
+    contactViews: string[];
   }
 }
 

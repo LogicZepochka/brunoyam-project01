@@ -8,6 +8,8 @@ import RegistrationService from "../services/registration.service";
 import CreateLogger, { LogLevel } from "../etc/logger";
 import RoomService from "../services/room.service";
 import { RoomCreateSchema } from "../validators/room.validators";
+import RoomDTO from "../dto/RoomDTO";
+import UserDTO from "../dto/UserDTO";
 
 const log = CreateLogger("RoomController")
 
@@ -18,7 +20,41 @@ export default class RoomController {
     constructor(service: RoomService) {
         this.roomService = service
         this.createRoom = this.createRoom.bind(this);
+        this.getOneRoom = this.getOneRoom.bind(this);
+        this.getOwner = this.getOwner.bind(this);
         log("RegistrationController is created",LogLevel.Debug)
+    }
+
+    async getOwner(req:Request,res:Response) {
+        let user = req.session.user;
+        if(!user) {
+            res.status(401).json(
+                                new APIAnswer(401).setError(ApiError.AuthorizationRequired,"Требуется авторизация")
+            )
+            return
+        }
+        const { id } = req.params
+        let result = await this.roomService.getRoomOwner(id)
+        if(!result) {
+            res.status(404).json(
+                new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        res.status(200).json(
+                new APIAnswer(200).setContent(new UserDTO(result,false))
+        )
+        if(req.session.contactViews)
+            if(!req.session.contactViews?.includes(id)) {
+                await this.roomService.incrementRoomContactView(id);
+                req.session.contactViews.push(id)
+                req.session.save(err => {
+                    if(err) {
+                        log(`Error when saving session`,LogLevel.Error)
+                        log(`${err}`,LogLevel.Error)
+                    }
+                })
+            }
     }
 
     async createRoom(req:Request,res:Response) {
@@ -72,5 +108,31 @@ export default class RoomController {
                 id: result._id
             })
         )
+    }
+
+    async getOneRoom(req: Request, res: Response) {
+        const { id } = req.params
+        let result = await this.roomService.getRoom(id)
+        if(!result) {
+            res.status(404).json(
+                new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        res.status(200).json(
+                new APIAnswer(200).setContent(new RoomDTO(result))
+        )
+        if(req.session.views)
+            if(!req.session.views.includes(id)) {
+                log(`Incremented view for ${id}`,LogLevel.Debug)
+                req.session.views.push(id)
+                await this.roomService.incrementRoomView(id);
+                req.session.save(err => {
+                    if(err) {
+                        log(`Error when saving session`,LogLevel.Error)
+                        log(`${err}`,LogLevel.Error)
+                    }
+                })
+            }
     }
 }

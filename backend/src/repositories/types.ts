@@ -1,3 +1,6 @@
+import { ObjectId } from "mongoose";
+import UserDTO from "../dto/UserDTO"
+import { Owner } from "./room.repository.interface";
 
 
 export enum userRoles {
@@ -25,6 +28,6 @@ export interface Room {
     area?: number,
     shortDescription?: string,
     fullDescription?: string,
-    owner?: User,
+    owner?: Owner | ObjectId;
     createdAt?: Date
 }

@@ -2,10 +2,11 @@ import mongoose from "mongoose";
 import { AppConfig } from "../config/config";
 import CreateLogger, { LogLevel } from "../etc/logger";
 import { RoomRepository } from "./room.repository.interface";
-import { Room } from "./types";
+import { Room, User } from "./types";
 import RoomModel from "../models/room.schema";
 import ApiException from "../etc/ApiError";
 import { ApiError } from "../builders/api/errors.enum";
+import UserDTO from "../dto/UserDTO";
 
 
 export default class MongooseRoomRepository implements RoomRepository {
@@ -19,6 +20,30 @@ export default class MongooseRoomRepository implements RoomRepository {
             this.logger("Mongoose database is no responding",LogLevel.Critical)
             process.exit(0)
         })
+    }
+
+    async incrementRoomView(id: string): Promise<void> {
+        let target = await RoomModel.findById(id)
+        if(!target)
+            return
+        target.views += 1
+        target.save();
+    }
+
+    async incrementRoomContactView(id: string): Promise<void> {
+        let target = await RoomModel.findById(id)
+        if(!target)
+            return
+        target.contactViews += 1
+        target.save();
+    }
+
+    async getRoomOwner(id: string): Promise<User | null> {
+        let room = await RoomModel.findById(id).select('owner').populate('owner','name phone email')
+        if(!room)
+            return null;
+        let owner = room.owner as unknown as User
+        return owner
     }
 
     async createRoom(newRoom: Room,ownerId: string): Promise<Room | null> {
@@ -62,7 +87,8 @@ export default class MongooseRoomRepository implements RoomRepository {
     }
 
     async getRoom(id: string): Promise<Room | null> {
-        let result = await RoomModel.findById(id).populate('owner')
+        let result = await RoomModel.findById(id).populate('owner',"name phone email")
+        console.log(result)
         if(!result)
             return null;
         return {
@@ -72,9 +98,12 @@ export default class MongooseRoomRepository implements RoomRepository {
             price: result.price,
             area: result.area,
             shortDescription: result.shortDescription,
-            fullDescription: result.fullDescription
+            fullDescription: result.fullDescription,
+            images: result.images
         };
     }
+
+    
     
     end(): void {
         throw new Error("Method not implemented.");

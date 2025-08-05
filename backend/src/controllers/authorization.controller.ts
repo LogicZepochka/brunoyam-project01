@@ -55,6 +55,8 @@ export default class AuthorizationController {
             username: user.name,
             email: user.email
         };
+        req.session.views = []
+        req.session.contactViews = []
 
         // Успешный ответ
         return res.status(200).json(new APIAnswer(200));
@@ -87,6 +89,8 @@ export default class AuthorizationController {
     async SignOutUser(req: Request, res: Response) {
         if(req.session.user) {
             req.session.user = undefined
+            req.session.views = []
+            req.session.contactViews = []
             req.session.destroy((err) => {
                 if(err) {
                     log(`Failed to destroy session:`,LogLevel.Error)

@@ -23,6 +23,25 @@ export default class RoomService {
         }
     }
 
+    async incrementRoomView(id: string): Promise<void> {
+        await this.repo.incrementRoomView(id)
+    }
+    
+    async incrementRoomContactView(id: string): Promise<void> {
+        await this.repo.incrementRoomContactView(id)
+    }
+
+    async getRoomOwner(_id: string) {
+        try {
+            let result = await this.repo.getRoomOwner(_id);
+            return result;
+        }
+        catch(e) {
+            this.logger(`${e}`,LogLevel.Error)
+            return null;
+        }
+    }
+
     async createRoom(user: Room,ownerId: string): Promise<Room | null> {
         try {
             console.log(user);

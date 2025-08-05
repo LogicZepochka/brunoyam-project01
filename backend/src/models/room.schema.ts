@@ -38,6 +38,14 @@ const roomSchema = new Schema({
     trim: true,
     maxlength: 5000
   },
+  views: {
+    type: Number,
+    default: 0
+  },
+  contactViews: {
+    type: Number,
+    default: 0
+  },
   // Ссылка на пользователя, который создал помещение
   owner: {
     type: Schema.Types.ObjectId,
@@ -66,6 +74,14 @@ roomSchema.pre('save', function(next) {
   this.updatedAt = new Date();
   next();
 });
+
+roomSchema.methods.incrementViews = async function() {
+  this.views += 1
+};
+
+roomSchema.methods.incrementContactViews = async function() {
+  this.contactViews += 1
+};
 
 const RoomModel = mongoose.model('Room', roomSchema);
 
