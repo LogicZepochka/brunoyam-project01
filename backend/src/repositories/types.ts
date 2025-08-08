@@ -11,6 +11,13 @@ export enum userRoles {
   ADMIN = 'Администратор'
 };
 
+export enum roomStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  HIDDEN = 'HIDDEN',
+  DELETED = "DELETED"
+};
+
 export interface User {
     _id?: string,
     name?: string,

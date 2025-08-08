@@ -1,4 +1,5 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
+import { roomStatus } from "../repositories/types";
 
 export interface IRoom {
   title: string;
@@ -62,6 +63,12 @@ const roomSchema = new Schema({
   contactViews: {
     type: Number,
     default: 0
+  },
+  status: {
+    type: String,
+    enum: Object.values(roomStatus),
+    default: roomStatus.PENDING,
+    required: true
   },
   // Ссылка на пользователя, который создал помещение
   owner: {
