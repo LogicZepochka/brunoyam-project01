@@ -105,7 +105,8 @@ export default class MongooseRoomRepository implements RoomRepository {
             area: result.area,
             shortDescription: result.shortDescription,
             fullDescription: result.fullDescription,
-            images: result.images
+            images: result.images,
+            status: result.status
         };
     }
 
