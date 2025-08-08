@@ -1,4 +1,23 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
+import { roomStatus } from "../repositories/types";
+
+export interface IRoom {
+  title: string;
+  address: string;
+  price: number;
+  images: string[];
+  area: number;
+  shortDescription: string;
+  fullDescription: string;
+  views: number;
+  contactViews: number;
+  owner: ObjectId;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  status: roomStatus;
+  __v?: number; // Добавляем версионирование
+}
 
 const roomSchema = new Schema({
   title: {
@@ -18,13 +37,7 @@ const roomSchema = new Schema({
     min: 0
   },
   images: [{
-    type: String, // URL фотографий
-    validate: {
-      validator: function(url: string) {
-        return /^(http|https):\/\/[^ "]+$/.test(url);
-      },
-      message: (props: { value: any; }) => `${props.value} не является валидным URL изображения!`
-    }
+    type: String
   }],
   area: {
     type: Number,
@@ -43,6 +56,20 @@ const roomSchema = new Schema({
     required: true,
     trim: true,
     maxlength: 5000
+  },
+  views: {
+    type: Number,
+    default: 0
+  },
+  contactViews: {
+    type: Number,
+    default: 0
+  },
+  status: {
+    type: String,
+    enum: Object.values(roomStatus),
+    default: roomStatus.PENDING,
+    required: true
   },
   // Ссылка на пользователя, который создал помещение
   owner: {
@@ -73,6 +100,14 @@ roomSchema.pre('save', function(next) {
   next();
 });
 
-const RoomModel = mongoose.model('Room', roomSchema);
+roomSchema.methods.incrementViews = async function() {
+  this.views += 1
+};
+
+roomSchema.methods.incrementContactViews = async function() {
+  this.contactViews += 1
+};
+
+const RoomModel = mongoose.model<IRoom>('Room', roomSchema);
 
 export default RoomModel

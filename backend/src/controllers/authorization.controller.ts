@@ -9,6 +9,7 @@ import CreateLogger, { LogLevel } from "../etc/logger";
 import AuthorizationService from "../services/authorization.service";
 import ApiException from "../etc/ApiError";
 import AuthorizationSchema from "../validators/authorization.validator";
+import { userRoles } from "../repositories/types";
 
 const log = CreateLogger("AuthController")
 
@@ -53,8 +54,11 @@ export default class AuthorizationController {
         req.session.user = {
             id: user._id,
             username: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role || userRoles.USER
         };
+        req.session.views = []
+        req.session.contactViews = []
 
         // Успешный ответ
         return res.status(200).json(new APIAnswer(200));
@@ -87,6 +91,8 @@ export default class AuthorizationController {
     async SignOutUser(req: Request, res: Response) {
         if(req.session.user) {
             req.session.user = undefined
+            req.session.views = []
+            req.session.contactViews = []
             req.session.destroy((err) => {
                 if(err) {
                     log(`Failed to destroy session:`,LogLevel.Error)
