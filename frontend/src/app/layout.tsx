@@ -24,7 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
