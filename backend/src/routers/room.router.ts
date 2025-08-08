@@ -43,5 +43,9 @@ export const roomRouter = () => {
     router.get("/list",roomController.getList)
     router.get("/get/:id",roomController.getOneRoom)
     router.get("/get/:id/owner",ProtectedRoute,roomController.getOwner)
+
+    router.patch("/status/:id/hide",ProtectedRoute,roomController.hideRoom)
+    router.patch("/status/:id/activate",ProtectedRoute,roomController.aproveRoom)
+    router.delete("/status/:id/delete",ProtectedRoute,roomController.deleteRoom)
     return router;
 }

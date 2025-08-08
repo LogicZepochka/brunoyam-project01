@@ -15,7 +15,7 @@ export default class RoomService {
     }
 
     async getRooms(page: number, offset: number) {
-        return await this.repo.getRooms(page,offset);
+        return await this.repo.getRooms(page,offset,{status: roomStatus.ACTIVE});
     }
 
     async getRoom(_id: string) {
@@ -73,7 +73,7 @@ export default class RoomService {
         }
     }
 
-    async ChangeRoomStatus(id: string, newStatus: roomStatus) {
+    async changeRoomStatus(id: string, newStatus: roomStatus) {
         await this.repo.updateRoom(id,{status: newStatus})
     }
 }

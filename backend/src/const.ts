@@ -1,5 +1,6 @@
 import MongooseRoomRepository from "./repositories/room.repository";
 import { RoomRepository } from "./repositories/room.repository.interface";
+import { userRoles } from "./repositories/types";
 import { UserRepository } from "./repositories/user.reposiotory.interface";
 import MongooseUserRepository from "./repositories/user.repository";
 
@@ -11,7 +12,7 @@ export const allowedHosts = [
 
 declare module 'express-session' {
   interface SessionData {
-    user: { id: string; username: string; email: string };
+    user: { id: string; username: string; email: string; role: userRoles };
     views: string[];
     contactViews: string[];
   }

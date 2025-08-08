@@ -10,6 +10,7 @@ import RoomService from "../services/room.service";
 import { RoomCreateSchema } from "../validators/room.validators";
 import RoomDTO from "../dto/RoomDTO";
 import UserDTO from "../dto/UserDTO";
+import { roomStatus, userRoles } from "../repositories/types";
 
 const log = CreateLogger("RoomController")
 
@@ -23,7 +24,106 @@ export default class RoomController {
         this.getOneRoom = this.getOneRoom.bind(this);
         this.getOwner = this.getOwner.bind(this);
         this.getList = this.getList.bind(this);
+        this.hideRoom = this.hideRoom.bind(this);
+        this.deleteRoom = this.deleteRoom.bind(this);
+        this.aproveRoom = this.aproveRoom.bind(this);
         log("RegistrationController is created",LogLevel.Debug)
+    }
+
+    async hideRoom(req: Request, res: Response) {
+        let user = req.session.user;
+        if(!user) {
+            res.status(401).json(
+                                new APIAnswer(401).setError(ApiError.AuthorizationRequired,"Требуется авторизация")
+            )
+            return
+        }
+        const { id } = req.params
+        let result = await this.roomService.getRoomOwner(id)
+        if(!result) {
+            res.status(404).json(
+                new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        if(result._id != user.id) {
+            if(user.role !== userRoles.ADMIN) {
+                res.status(401).json(
+                    new APIAnswer(401).setError(ApiError.Forbidden,"Прятать можно только свою карточку помещения")
+                )
+                return;
+            }
+        }
+
+        await this.roomService.changeRoomStatus(id,roomStatus.HIDDEN)
+        res.status(200).json(
+            new APIAnswer(200)
+        )
+    }
+
+    async deleteRoom(req: Request, res: Response) {
+        let user = req.session.user;
+        if(!user) {
+            res.status(401).json(
+                                new APIAnswer(401).setError(ApiError.AuthorizationRequired,"Требуется авторизация")
+            )
+            return
+        }
+        if(user.role !== userRoles.ADMIN) {
+            res.status(401).json(
+                new APIAnswer(401).setError(ApiError.Forbidden,"Недостаточно прав")
+            )
+            return;
+        }
+        const { id } = req.params
+        let result = await this.roomService.getRoomOwner(id)
+        if(!result) {
+            res.status(404).json(
+                new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        await this.roomService.changeRoomStatus(id,roomStatus.DELETED)
+        res.status(200).json(
+            new APIAnswer(200)
+        )
+    }
+
+    async aproveRoom(req: Request, res: Response) {
+        let user = req.session.user;
+        if(!user) {
+            res.status(401).json(
+                                new APIAnswer(401).setError(ApiError.AuthorizationRequired,"Требуется авторизация")
+            )
+            return
+        }
+        if(user.role !== userRoles.ADMIN) {
+            res.status(401).json(
+                new APIAnswer(401).setError(ApiError.Forbidden,"Недостаточно прав")
+            )
+            return;
+        }
+        const { id } = req.params
+        let [owner,room] = await Promise.all([
+            this.roomService.getRoomOwner(id),
+            this.roomService.getRoom(id),
+        ])
+        if(!owner || !room) {
+            res.status(404).json(
+                new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        if(room.status !== roomStatus.PENDING) {
+            res.status(400).json(
+                new APIAnswer(400).setError(ApiError.WrongAction,"Комната уже подтверждена")
+            )
+            return;
+        }
+        await this.roomService.changeRoomStatus(id,roomStatus.ACTIVE)
+        res.status(200).json(
+            new APIAnswer(200)
+        )
     }
 
     async getList(req: Request, res: Response) {

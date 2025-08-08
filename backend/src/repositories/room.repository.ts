@@ -22,9 +22,9 @@ export default class MongooseRoomRepository implements RoomRepository {
         })
     }
 
-    async getRooms(page: number, offset: number): Promise<PaginationResult<IRoom>> {
+    async getRooms(page: number, offset: number, query: any = {}): Promise<PaginationResult<IRoom>> {
         
-        let result = await paginate(RoomModel,{},{page: page, limit: offset})
+        let result = await paginate(RoomModel,query,{page: page, limit: offset})
         return result;
     }
 

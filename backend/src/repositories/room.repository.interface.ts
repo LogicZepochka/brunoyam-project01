@@ -15,7 +15,7 @@ export interface RoomRepository {
     deleteRoom(id: string): Promise<boolean>
     getRoom(id: string): Promise<Room | null>
     getRoomOwner(id: string): Promise<User | null>
-    getRooms(page: number, offset: number): Promise<PaginationResult<IRoom>>
+    getRooms(page: number, offset: number,query: any): Promise<PaginationResult<IRoom>>
 
 
     incrementRoomView(id: string): Promise<void>

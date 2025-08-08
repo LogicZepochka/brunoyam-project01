@@ -57,7 +57,7 @@ export interface PaginationResult<T> {
 
 export async function paginate<T>(
   model: Model<T>,
-  query: any = {},
+  query: any = {}, // Partial - говорят что грязь, но пока нет других идей...
   options: PaginationOptions
 ): Promise<PaginationResult<T>> {
   const page = options.page || 1;

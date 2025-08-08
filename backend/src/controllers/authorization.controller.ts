@@ -9,6 +9,7 @@ import CreateLogger, { LogLevel } from "../etc/logger";
 import AuthorizationService from "../services/authorization.service";
 import ApiException from "../etc/ApiError";
 import AuthorizationSchema from "../validators/authorization.validator";
+import { userRoles } from "../repositories/types";
 
 const log = CreateLogger("AuthController")
 
@@ -53,7 +54,8 @@ export default class AuthorizationController {
         req.session.user = {
             id: user._id,
             username: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role || userRoles.USER
         };
         req.session.views = []
         req.session.contactViews = []
