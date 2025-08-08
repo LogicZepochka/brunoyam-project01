@@ -15,6 +15,7 @@ export interface IRoom {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  status: roomStatus;
   __v?: number; // Добавляем версионирование
 }
 

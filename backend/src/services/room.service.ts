@@ -1,6 +1,6 @@
 import CreateLogger, { LogLevel } from "../etc/logger";
 import { RoomRepository } from "../repositories/room.repository.interface";
-import { Room, User } from "../repositories/types";
+import { Room, roomStatus, User } from "../repositories/types";
 
 
 
@@ -71,5 +71,9 @@ export default class RoomService {
             this.logger(`Failed to update room:\n${e}`,LogLevel.Error)
             return false;
         }
+    }
+
+    async ChangeRoomStatus(id: string, newStatus: roomStatus) {
+        await this.repo.updateRoom(id,{status: newStatus})
     }
 }

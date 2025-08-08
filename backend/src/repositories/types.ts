@@ -38,7 +38,8 @@ export interface Room {
     shortDescription?: string,
     fullDescription?: string,
     owner?: Owner | ObjectId;
-    createdAt?: Date
+    createdAt?: Date,
+    status?: roomStatus
 }
 
 export interface PaginationOptions {
