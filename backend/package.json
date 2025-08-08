@@ -1,6 +1,6 @@
 {
   "name": "brunoyam-project-1-backend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Backend for Hotel Booking project",
   "main": "index.js",
   "scripts": {
