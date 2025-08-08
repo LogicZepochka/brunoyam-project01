@@ -20,6 +20,11 @@ export default class RegistrationController {
     }
 
     async RegisterUser(req: Request, res: Response) {
+        if(req.session.user) {
+            return res.status(400).json(
+                new APIAnswer(400).setError(ApiError.WrongAction,"Вы уже авторизированы. Выйдите из учетной записи, чтобы зарегистрироваться")
+            )
+        }
         log(`Service is ${this.regService}`,LogLevel.Debug)
         try {
             let parseResult = await RegistrationSchema.safeParseAsync(req.body);
