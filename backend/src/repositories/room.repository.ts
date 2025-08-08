@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { AppConfig } from "../config/config";
 import CreateLogger, { LogLevel } from "../etc/logger";
 import { RoomRepository } from "./room.repository.interface";
-import { Room, User } from "./types";
-import RoomModel from "../models/room.schema";
+import { paginate, PaginationResult, Room, User } from "./types";
+import RoomModel, { IRoom } from "../models/room.schema";
 import ApiException from "../etc/ApiError";
 import { ApiError } from "../builders/api/errors.enum";
 import UserDTO from "../dto/UserDTO";
@@ -20,6 +20,12 @@ export default class MongooseRoomRepository implements RoomRepository {
             this.logger("Mongoose database is no responding",LogLevel.Critical)
             process.exit(0)
         })
+    }
+
+    async getRooms(page: number, offset: number): Promise<PaginationResult<IRoom>> {
+        
+        let result = await paginate(RoomModel,{},{page: page, limit: offset})
+        return result;
     }
 
     async incrementRoomView(id: string): Promise<void> {

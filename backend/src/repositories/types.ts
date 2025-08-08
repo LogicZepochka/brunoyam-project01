@@ -2,6 +2,8 @@ import { ObjectId } from "mongoose";
 import UserDTO from "../dto/UserDTO"
 import { Owner } from "./room.repository.interface";
 
+import { Model } from 'mongoose';
+
 
 export enum userRoles {
   USER = 'Пользователь',
@@ -30,4 +32,42 @@ export interface Room {
     fullDescription?: string,
     owner?: Owner | ObjectId;
     createdAt?: Date
+}
+
+export interface PaginationOptions {
+  page: number;
+  limit: number;
+}
+
+export interface PaginationResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export async function paginate<T>(
+  model: Model<T>,
+  query: any = {},
+  options: PaginationOptions
+): Promise<PaginationResult<T>> {
+  const page = options.page || 1;
+  const limit = options.limit || 10;
+  const skip = (page - 1) * limit;
+
+  const [data, total] = await Promise.all([
+    model.find(query).skip(skip).limit(limit).exec(),
+    model.countDocuments(query).exec()
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data,
+    total,
+    page,
+    limit,
+    totalPages
+  };
 }

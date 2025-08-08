@@ -22,7 +22,26 @@ export default class RoomController {
         this.createRoom = this.createRoom.bind(this);
         this.getOneRoom = this.getOneRoom.bind(this);
         this.getOwner = this.getOwner.bind(this);
+        this.getList = this.getList.bind(this);
         log("RegistrationController is created",LogLevel.Debug)
+    }
+
+    async getList(req: Request, res: Response) {
+        const page = parseInt(req.query.page as string) || 1;
+        const offset = parseInt(req.query.offset as string) || 10;
+
+        if(page < 1 || offset < 1) {
+            res.status(400).json(
+                                new APIAnswer(400).setError(ApiError.InvalidInput,"Неверные параметры пагинации")
+            )
+            return
+        }
+
+        let result = await this.roomService.getRooms(page,offset)
+
+        res.status(200).json(
+            new APIAnswer(200).setContent(result)
+        )
     }
 
     async getOwner(req:Request,res:Response) {

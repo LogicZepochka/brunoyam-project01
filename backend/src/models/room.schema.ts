@@ -1,4 +1,21 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
+
+export interface IRoom {
+  title: string;
+  address: string;
+  price: number;
+  images: string[];
+  area: number;
+  shortDescription: string;
+  fullDescription: string;
+  views: number;
+  contactViews: number;
+  owner: ObjectId;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  __v?: number; // Добавляем версионирование
+}
 
 const roomSchema = new Schema({
   title: {
@@ -83,6 +100,6 @@ roomSchema.methods.incrementContactViews = async function() {
   this.contactViews += 1
 };
 
-const RoomModel = mongoose.model('Room', roomSchema);
+const RoomModel = mongoose.model<IRoom>('Room', roomSchema);
 
 export default RoomModel

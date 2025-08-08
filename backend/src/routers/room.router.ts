@@ -40,6 +40,7 @@ const roomController = new RoomController(roomService);
 export const roomRouter = () => {
     
     router.post("/create",ProtectedRoute,upload.array("photos",10),roomController.createRoom)
+    router.get("/list",roomController.getList)
     router.get("/get/:id",roomController.getOneRoom)
     router.get("/get/:id/owner",ProtectedRoute,roomController.getOwner)
     return router;

@@ -5,12 +5,17 @@ import { Room, User } from "../repositories/types";
 
 
 export default class RoomService {
+    
 
     private repo: RoomRepository
     private logger = CreateLogger("RoomService")
 
     constructor(userRepository: RoomRepository) {
         this.repo = userRepository
+    }
+
+    async getRooms(page: number, offset: number) {
+        return await this.repo.getRooms(page,offset);
     }
 
     async getRoom(_id: string) {
