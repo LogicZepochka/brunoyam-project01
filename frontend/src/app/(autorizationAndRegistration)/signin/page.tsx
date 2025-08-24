@@ -1,7 +1,9 @@
+"use server";
+
 import SignInForm from "@/components/signin/SignInForm";
 import { Box, Container, Grid, Paper } from "@mui/material";
 
-export default function Home() {
+export default async function Home() {
   return (
     <Container maxWidth="xl">
       <Grid
