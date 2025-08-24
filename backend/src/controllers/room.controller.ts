@@ -49,7 +49,7 @@ export default class RoomController {
             )
             return;
         }
-        if(owner._id != user.id) {
+        if(owner._id !== user.id) {
             if(user.role !== userRoles.ADMIN) {
                 res.status(401).json(
                     new APIAnswer(401).setError(ApiError.Forbidden,"Прятать можно только свою карточку помещения")
@@ -123,7 +123,7 @@ export default class RoomController {
             )
             return;
         }
-        if(room.status != roomStatus.PENDING) {
+        if(room.status !== roomStatus.PENDING) {
             res.status(400).json(
                 new APIAnswer(400).setError(ApiError.WrongAction,"Комната уже подтверждена")
             )
