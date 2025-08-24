@@ -16,13 +16,18 @@ export default class ImagesController {
         
         try {
             let { id } = req.params
-            const imagePath = path.join(process.cwd(), 'uploads', id);
+            const normalizedPath = path.normalize(id).replace(/^(\.\.[\/\\])+/, '');
+            const imagePath = path.join(process.cwd(), 'uploads', normalizedPath);
             if(!fs.existsSync(imagePath)) {
                 res.status(404).send('Image not found');
                 return
             }
             const readStream = fs.createReadStream(imagePath);
             const mimeType = mime.lookup(imagePath);
+            const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedMimes.includes(mimeType)) {
+                return res.status(400).send('Invalid file type');
+            }
             if(!mimeType) {
                 log(`mimeType for '${imagePath}' is null`,LogLevel.Warning);
                 res.status(404).send('Image not found');
