@@ -24,13 +24,15 @@ app.use(session({
     resave: false,
     cookie: {
         secure: AppConfig.Env !== "dev",
-        maxAge: 3600000
+        maxAge: 3600000,
+        httpOnly: true,
+        sameSite: true
     },
     
     store: MongoStore.create({
         mongoUrl: AppConfig.Mongo.connectionString
     }),
-    saveUninitialized: true
+    saveUninitialized: false
 }))
 
 app.use(cors({origin: allowedHosts}));
