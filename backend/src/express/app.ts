@@ -57,8 +57,8 @@ app.use(helmet());
 // Routers
 app.use("/",registrationRouter())
 app.use("/",authorizationRouter())
-app.use("/user",userRouter())
-app.use("/room",roomRouter())
+app.use("/users",userRouter())
+app.use("/rooms",roomRouter())
 app.use("/images",imageRouter())
 
 
