@@ -12,6 +12,9 @@ import { authorizationRouter } from "../routers/authorization.router";
 import { userRouter } from "../routers/user.router";
 import { roomRouter } from "../routers/room.router";
 import { imageRouter } from "../routers/image.router";
+import {rateLimit} from "express-rate-limit"
+import APIAnswer from "../builders/api/answer.builder";
+import { ApiError } from "../builders/api/errors.enum";
 
 const app = express();
 const logger = CreateLogger("express");
@@ -19,6 +22,16 @@ const logger = CreateLogger("express");
 logger("Express creation started",LogLevel.Debug)
 
 app.set("trust proxy",1)
+app.use(rateLimit({
+    windowMs: 60 * 1000,
+    limit: 20,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: JSON.stringify(
+        new APIAnswer(429).setError(ApiError.ToManyRequests,"Получено слишком много запросов за короткое время")
+    )
+}))
+
 app.use(session({
     secret: AppConfig.Security.Sessions.Secret,
     resave: false,
