@@ -49,7 +49,7 @@ export default class RoomService {
 
     async createRoom(user: Room,ownerId: string): Promise<Room | null> {
         try {
-            console.log(user);
+            this.logger(`CreateRoom payload: ${JSON.stringify(user)}`,LogLevel.Debug)
             let result = await this.repo.createRoom(user,ownerId);
             this.logger(`Created new room ${result?.title} with id ${result?._id} (Owner: ${ownerId})`,LogLevel.Debug)
             return result;

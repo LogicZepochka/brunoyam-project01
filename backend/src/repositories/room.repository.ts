@@ -94,7 +94,7 @@ export default class MongooseRoomRepository implements RoomRepository {
 
     async getRoom(id: string): Promise<Room | null> {
         let result = await RoomModel.findById(id).populate('owner',"name phone email")
-        console.log(result)
+        this.logger(`Fetched room: ${result ? result._id.toString() : 'null'}` , LogLevel.Debug)
         if(!result)
             return null;
         return {

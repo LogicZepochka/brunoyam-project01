@@ -216,7 +216,7 @@ export default class RoomController {
         const fileNames = Object.values(req.files)
             .flat()
             .map((file: Express.Multer.File) => file.filename);
-            console.log(fileNames)
+        log(`Uploaded files: ${JSON.stringify(fileNames)}`,LogLevel.Debug)
         let result = await this.roomService.createRoom(
             {...parsedBody.data,
                 images: fileNames
