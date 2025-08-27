@@ -12,7 +12,7 @@ export default function CreateLogger(tag: string) {
 
     return (message: string, level: LogLevel = LogLevel.Info) => {
         let curTime = new Date();
-        let msg = `[${curTime.toLocaleDateString()} ${curTime.toLocaleTimeString()}][${tag}][${level}] \t${message}`;
+        let msg = `[${curTime.toLocaleDateString()} ${curTime.toLocaleTimeString()}][${level.toUpperCase()}][${tag}]\t${message}`;
         switch(level) {
             case LogLevel.Debug: {if(AppConfig.Env === "dev") console.log(`\x1b[34m${msg}\x1b[0m`); break;}
             case LogLevel.Warning: {console.log(`\x1b[33m${msg}\x1b[0m`); break;}
