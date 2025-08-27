@@ -49,7 +49,7 @@ export default class RoomController {
             )
             return;
         }
-        if(owner._id != user.id) {
+        if(owner._id?.toString() !== user.id) {
             if(user.role !== userRoles.ADMIN) {
                 res.status(401).json(
                     new APIAnswer(401).setError(ApiError.Forbidden,"Прятать можно только свою карточку помещения")
@@ -78,17 +78,18 @@ export default class RoomController {
             )
             return
         }
-        if(user.role !== userRoles.ADMIN) {
-            res.status(401).json(
-                new APIAnswer(401).setError(ApiError.Forbidden,"Недостаточно прав")
-            )
-            return;
-        }
+        
         const { id } = req.params
         let result = await this.roomService.getRoomOwner(id)
         if(!result) {
             res.status(404).json(
                 new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
+            )
+            return;
+        }
+        if(user.role !== userRoles.ADMIN && result._id?.toString() !== user.id) {
+            res.status(401).json(
+                new APIAnswer(401).setError(ApiError.Forbidden,"Недостаточно прав")
             )
             return;
         }
@@ -123,7 +124,7 @@ export default class RoomController {
             )
             return;
         }
-        if(room.status != roomStatus.PENDING) {
+        if(room.status !== roomStatus.PENDING) {
             res.status(400).json(
                 new APIAnswer(400).setError(ApiError.WrongAction,"Комната уже подтверждена")
             )

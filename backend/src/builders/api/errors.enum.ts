@@ -9,6 +9,7 @@ export enum ApiError {
     InvalidInput = "INVALID_INPUT",
     Forbidden = "FORBIDDEN",
     NotFound = "NOT_FOUND",
-    WrongAction = "WRONG_ACTION"
+    WrongAction = "WRONG_ACTION",
+    ToManyRequests = "TO_MANY_REQUESTS"
 }
 
