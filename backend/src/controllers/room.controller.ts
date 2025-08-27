@@ -49,8 +49,6 @@ export default class RoomController {
             )
             return;
         }
-        console.log(user)
-        console.log(owner)
         if(owner._id?.toString() !== user.id) {
             if(user.role !== userRoles.ADMIN) {
                 res.status(401).json(
