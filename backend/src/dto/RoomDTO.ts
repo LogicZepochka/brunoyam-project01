@@ -1,6 +1,6 @@
 import GenerateImageURI from "../etc/images.uriGenerator";
 import { Owner } from "../repositories/room.repository.interface";
-import { Room } from "../repositories/types";
+import { Room, roomStatus } from "../repositories/types";
 import UserDTO from "./UserDTO";
 
 
@@ -15,6 +15,7 @@ export default class RoomDTO {
     fullDescription?: string
     owner?: Owner
     createdAt?: Date
+    status?: roomStatus
 
     constructor(room: Room) {
         this.title = room.title
@@ -26,6 +27,7 @@ export default class RoomDTO {
         this.fullDescription = room.fullDescription
         this.owner = room.owner as Owner
         this.createdAt = room.createdAt
+        this.status = room.status
     }
 
 }
