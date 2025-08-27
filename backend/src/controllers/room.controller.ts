@@ -114,11 +114,8 @@ export default class RoomController {
             return;
         }
         const { id } = req.params
-        let [owner,room] = await Promise.all([
-            this.roomService.getRoomOwner(id),
-            this.roomService.getRoom(id),
-        ])
-        if(!owner || !room) {
+        let room = await this.roomService.getRoom(id)
+        if(!room) {
             res.status(404).json(
                 new APIAnswer(404).setError(ApiError.NotFound,"Помещение не найдено")
             )
