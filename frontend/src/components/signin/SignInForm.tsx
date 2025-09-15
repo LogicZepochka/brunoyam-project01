@@ -2,17 +2,21 @@
 
 import signInAction from "@/actions/signInAction";
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
   Divider,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
 
 export default function SignInForm() {
-  const { pending } = useFormStatus();
+
+  const [state, formAction, pending] = useActionState(signInAction, {});
+
 
   const handleClickToRegister = () => {
     window.location.href = "/register";
@@ -27,13 +31,15 @@ export default function SignInForm() {
       <Typography align="center" variant="h4">
         Авторизация
       </Typography>
-      <form action={signInAction}>
+      <form action={formAction}>
         <Box padding={2}>
           <Stack spacing={2}>
             <TextField
               label="Почтовый ящик"
               placeholder="email@example.ru"
               name="email"
+              error={state.errors?.email != undefined}
+              helperText={state.errors?.email}
               fullWidth
             />
             <TextField
@@ -42,11 +48,17 @@ export default function SignInForm() {
               name="password"
               fullWidth
             />
-            <Stack>
+            <Stack spacing={1}>
+              <Collapse in={state.data?.error}>
+                <Alert severity="error">
+                  {state.data?.errorMessage}
+                </Alert>
+              </Collapse>
               <Button
                 type="submit"
                 variant="contained"
                 disabled={pending}
+                loading={pending}
                 onSubmit={() => {}}
               >
                 Авторизироваться

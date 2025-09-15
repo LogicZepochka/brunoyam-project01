@@ -1,16 +1,27 @@
 'use server'
 
 import GetConfig from "@/config/AppConfig"
-import z, { email } from "zod"
+import z from "zod"
 
 const signInSchema = z.object({
     email: z.email("Требуется валидный почтовый ящик в формате xxx@yyy.dd"),
     password: z.string()
 })
 
-export default async function signInAction(formData: FormData) {
-    
-    
+interface StateData {
+    status: number,
+    error?: boolean,
+    errorCode?: string
+    errorMessage?: string
+}
+
+type SignInState = {
+    errors?: { email?: string[]; password?: string[] }
+    status?: number
+    data?: StateData
+}
+
+export default async function signInAction(prevState: SignInState, formData: FormData): Promise<SignInState> {
     console.log("signInAction")
     const validatedFields = await signInSchema.safeParseAsync({
         email: formData.get("email"),
@@ -19,11 +30,11 @@ export default async function signInAction(formData: FormData) {
 
     if (!validatedFields.success) {
         return {
-            errors: z.flattenError(validatedFields.error).fieldErrors,
+            errors: validatedFields.error.flatten().fieldErrors,
         }
     }
 
-    let result = await fetch(`${(await GetConfig()).API_URL}/login`,{
+    const response = await fetch(`${(await GetConfig()).API_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -31,9 +42,15 @@ export default async function signInAction(formData: FormData) {
         body: JSON.stringify(validatedFields.data)
     })
 
-    console.log(result)
-    return await {
-        status: result.status,
-        data: result.json()
+    let data: unknown
+    try {
+        data = await response.json()
+    } catch {
+        data = null
+    }
+
+    return {
+        status: response.status,
+        data: data as StateData | undefined
     }
 }
