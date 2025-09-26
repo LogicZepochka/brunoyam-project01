@@ -18,10 +18,47 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             process.exit(0)
         })
     }
+
+    async findByEmail(email: string): Promise<User | null> {
+        const result = await UserModel.findOne({
+            email: email
+        })
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            password: result?.password,
+            lastLogin: result?.lastLogin,
+            role: result?.role,
+            phone: result?.phone
+        }
+
+    }
+    async findByPhone(phone: string): Promise<User | null> {
+        const result = await UserModel.findOne({
+            phone: phone
+        })
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            lastLogin: result?.lastLogin,
+            password: result?.password,
+            role: result?.role,
+            phone: result?.phone
+        }
+    }
     
     [Symbol.dispose](): void {
         this.end();
     }
+
     end(): void {
         mongoose.disconnect()
     }
@@ -36,10 +73,33 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result?._id.toString(),
             name: result?.name,
-            email: result?.password,
+            email: result?.email,
             lastLogin: result?.lastLogin,
-            role: result?.role
+            role: result?.role,
+            phone: result?.phone
         };
+    }
+
+    async findById(id: string): Promise<User | null> {
+        try {
+        let result = await UserModel.findById(
+            id
+        )
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            lastLogin: result?.lastLogin,
+            role: result?.role,
+            phone: result?.phone
+        };
+        }
+        catch(e) {
+            return null;
+        }
     }
 
     async createUser(newUser: User): Promise<User | null> {
@@ -47,29 +107,41 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
             {
                 name: newUser.name,
                 password: newUser.password,
-                email: newUser.email
+                email: newUser.email,
+                phone: newUser.phone
             }
         )
         return {
             _id: result._id.toString(),
             name: result.name,
-            email: result.password,
+            email: result.email,
             lastLogin: result.lastLogin,
             role: result.role
         };
     }
 
-    async updateUser(id: string, Data: Partial<User>): Promise<void> {
-        await UserModel.updateOne({_id: id},
-            {
-                ...Data
+    async updateUser(id: string, Data: Partial<User>): Promise<any> {
+        try {
+            const result = await UserModel.updateOne({ _id: id }, { ...Data });
+            if (result.matchedCount === 0) {
+                return null;
             }
-        )
+            return await UserModel.findById(id);
+        } catch (e) {
+            return null;
+        }
     }
 
     async deleteUser(id: string): Promise<boolean> {
-        await UserModel.deleteOne({_id: id})
-        return true;
+        try {
+            const result = await UserModel.deleteOne({ _id: id });
+            if (result.deletedCount === 0) {
+                return false;
+            }
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
 
