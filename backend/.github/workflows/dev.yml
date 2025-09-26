@@ -2,7 +2,7 @@ name: Dev Branch Actions
 
 on:
   push:
-    branches: [dev]
+    branches: [main,dev]
 
 jobs:
   setup-tests:
