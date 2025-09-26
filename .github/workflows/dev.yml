@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       EXPRESS_PORT: 3001
-      MONGO_DB: "mongodb://mongo:27017/tests"
+      MONGO_DB: "mongodb://127.0.0.1:27017/tests"
       SESSION_SECRET: "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
     services:
       mongo:
