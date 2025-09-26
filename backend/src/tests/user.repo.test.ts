@@ -8,7 +8,6 @@ describe("Тестирование репозитория",() => {
 
     beforeAll(async () => {
         repo = new MongooseUserRepository();
-        
     })
 
     afterAll(async () => {
