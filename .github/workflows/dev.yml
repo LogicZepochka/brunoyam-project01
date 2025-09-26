@@ -7,6 +7,20 @@ on:
 jobs:
   setup-tests:
     runs-on: ubuntu-22.04
+    env:
+      EXPRESS_PORT: 3001
+      MONGO_DB: = "mongodb://localhost:27017/tests"
+      SESSION_SECRET: = "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
