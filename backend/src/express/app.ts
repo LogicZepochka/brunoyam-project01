@@ -39,7 +39,7 @@ app.use(session({
         secure: AppConfig.Env !== "dev",
         maxAge: 3600000,
         httpOnly: true,
-        sameSite: true
+        sameSite: "lax"        
     },
     
     store: MongoStore.create({
