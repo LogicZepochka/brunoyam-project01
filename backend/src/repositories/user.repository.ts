@@ -92,23 +92,34 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         return {
             _id: result._id.toString(),
             name: result.name,
-            email: result.password,
+            email: result.email,
             lastLogin: result.lastLogin,
             role: result.role
         };
     }
 
-    async updateUser(id: string, Data: Partial<User>): Promise<void> {
-        await UserModel.updateOne({_id: id},
-            {
-                ...Data
+    async updateUser(id: string, Data: Partial<User>): Promise<any> {
+        try {
+            const result = await UserModel.updateOne({ _id: id }, { ...Data });
+            if (result.matchedCount === 0) {
+                return null;
             }
-        )
+            return await UserModel.findById(id);
+        } catch (e) {
+            return null;
+        }
     }
 
     async deleteUser(id: string): Promise<boolean> {
-        await UserModel.deleteOne({_id: id})
-        return true;
+        try {
+            const result = await UserModel.deleteOne({ _id: id });
+            if (result.deletedCount === 0) {
+                return false;
+            }
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
 
