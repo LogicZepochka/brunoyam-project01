@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       EXPRESS_PORT: 3001
-      MONGO_DB: = "mongodb://localhost:27017/tests"
-      SESSION_SECRET: = "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
+      MONGO_DB: "mongodb://mongo:27017/tests"
+      SESSION_SECRET: "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
     services:
       mongo:
         image: mongo:latest
@@ -30,10 +30,13 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          
+
       - name: Install deps
         run: npm ci
-        
+      - name: Wait for MongoDB
+        run: |
+          timeout 30s bash -c 'until nc -z mongo 27017; do sleep 1; done' || exit 1
+          echo "MongoDB is ready!"
       - name: Test backend
         run: npm run test:backend
         
