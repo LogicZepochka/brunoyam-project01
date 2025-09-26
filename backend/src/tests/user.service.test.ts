@@ -2,13 +2,18 @@ import { UserRepository } from "../repositories/user.reposiotory.interface"
 import MongooseUserRepository from "../repositories/user.repository"
 import UserService from "../services/user.service";
 
+function randomPhone() {
+    return '+7' + Array.from({length: 10}, () => Math.floor(Math.random() * 10)).join('');
+}
 
 describe("Тестирование репозитория",() => {
 
     var service: UserService;
+    var userRepo: MongooseUserRepository;
 
     beforeAll(async () => {
-        service = new UserService();
+        userRepo = new MongooseUserRepository();
+        service = new UserService(userRepo);
         
     })
 
@@ -19,7 +24,8 @@ describe("Тестирование репозитория",() => {
         let result = await service.createUser({
             name: "Test",
             email: "lolka@lal.ru",
-            password: "123qwerty"
+            password: "123qwerty",
+            phone: randomPhone()
         })
         expect(result).not.toBe(null)
         if(result) {
@@ -38,7 +44,8 @@ describe("Тестирование репозитория",() => {
         let result = await service.createUser({
             name: "Test",
             email: "lolka2@lal.ru",
-            password: "123qwerty"
+            password: "123qwerty",
+            phone: randomPhone()
         })
         expect(result).not.toBe(null)
         if(result) {

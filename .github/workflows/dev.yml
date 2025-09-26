@@ -1,0 +1,67 @@
+name: Dev Branch Actions
+
+on:
+  push:
+    branches: [main, dev]  # убрал лишние скобки вокруг dev
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-22.04
+    env:
+      EXPRESS_PORT: 3001
+      MONGO_DB: "mongodb://127.0.0.1:27017/tests"
+      SESSION_SECRET: "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+      - name: Test backend
+        run: npm run test:backend
+  frontend-tests:
+    runs-on: ubuntu-22.04
+    env:
+      EXPRESS_PORT: 3001
+      MONGO_DB: "mongodb://127.0.0.1:27017/tests"
+      SESSION_SECRET: "Pxm2BLouGJWeVafS531wRA6R0mq5FcL7"
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+      - name: Test backend
+        run: echo Test is not implementet yet
