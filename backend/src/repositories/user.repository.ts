@@ -80,6 +80,28 @@ export default class MongooseUserRepository implements UserRepository, Disposabl
         };
     }
 
+    async findById(id: string): Promise<User | null> {
+        try {
+        let result = await UserModel.findById(
+            id
+        )
+        if(!result)
+            return null;
+
+        return {
+            _id: result?._id.toString(),
+            name: result?.name,
+            email: result?.email,
+            lastLogin: result?.lastLogin,
+            role: result?.role,
+            phone: result?.phone
+        };
+        }
+        catch(e) {
+            return null;
+        }
+    }
+
     async createUser(newUser: User): Promise<User | null> {
         let result = await UserModel.create(
             {

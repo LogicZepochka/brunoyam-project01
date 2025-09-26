@@ -82,11 +82,11 @@ describe("Тестирование репозитория",() => {
     });
 
     // Проверяем, что метод findById существует
-    /*it("repo should have findById method", () => {
+    it("repo should have findById method", () => {
         expect(typeof (repo as any).findById).toBe("function");
-    });*/
+    });
 
-    /*describe("findById", () => {
+    describe("findById", () => {
         it("should find a user by id", async () => {
             const userData = {
                 email: "byid@example.com",
@@ -115,7 +115,7 @@ describe("Тестирование репозитория",() => {
         it("should handle invalid id format", async () => {
             await expect((repo as any).findById("invalid-id")).resolves.toBeNull();
         });
-    });*/
+    });
 
     // Проверяем, что метод updateUser существует
     it("repo should have updateUser method", () => {
