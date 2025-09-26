@@ -48,11 +48,13 @@ app.use(session({
     saveUninitialized: false
 }))
 
-app.use(cors({origin: allowedHosts}));
+app.use(cors({origin: allowedHosts, credentials: true}));
 logger("Allowed origins: "+allowedHosts,LogLevel.Debug)
 app.use(express.json());
 app.disable('x-powered-by');
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}));
 
 // Routers
 app.use("/",registrationRouter())
