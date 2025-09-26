@@ -2,7 +2,7 @@ name: Dev Branch Actions
 
 on:
   push:
-    branches: [main,dev]
+    branches: [main, dev]  # убрал лишние скобки вокруг dev
 
 jobs:
   setup-tests:
@@ -10,11 +10,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
       - name: Install deps
         run: npm ci
+        
       - name: Test backend
         run: npm run test:backend
+        
       - name: Test frontend
-        run: echo Currently not implemented (Skipped)
+        run: echo "Currently not implemented (Skipped)"
+        
       - name: Test all build
-        run: echo Currently not implemented (Skipped)
+        run: echo "Currently not implemented (Skipped)"
