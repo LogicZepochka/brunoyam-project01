@@ -1,0 +1,20 @@
+name: Dev Branch Actions
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  setup-tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install deps
+        run: npm ci
+      - name: Test backend
+        run: npm run test:backend
+      - name: Test frontend
+        run: echo Currently not implemented (Skipped)
+      - name: Test all build
+        run: echo Currently not implemented (Skipped)
