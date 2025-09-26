@@ -33,10 +33,6 @@ jobs:
 
       - name: Install deps
         run: npm ci
-      - name: Wait for MongoDB
-        run: |
-          timeout 30s bash -c 'until nc -z mongo 27017; do sleep 1; done' || exit 1
-          echo "MongoDB is ready!"
       - name: Test backend
         run: npm run test:backend
         
