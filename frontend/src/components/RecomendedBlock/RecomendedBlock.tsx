@@ -3,7 +3,7 @@
 import GetConfig from "@/config/AppConfig"
 import { ApiPaginatedResult } from "@/utils/api.types"
 import { RoomDTO } from "@/utils/dto.types"
-import { Typography } from "@mui/material"
+import { Grid, Typography } from "@mui/material"
 import { GetStaticProps, InferGetStaticPropsType } from "next"
 import RoomCard from "../RoomCards/RoomCard"
 
@@ -21,7 +21,9 @@ export default async function RecomendedBlock() {
     <div>
       <h3>Рекомендации</h3>
       <ul>
-        {recomendRooms.content.data.map(item => <RoomCard key={item._id} roomDTO={item} />)}
+        <Grid container>
+          {recomendRooms.content.data.map(item => <Grid key={item._id} ><RoomCard roomDTO={item} /></Grid>)}
+        </Grid>
       </ul>
     </div>
   );

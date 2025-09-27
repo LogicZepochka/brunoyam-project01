@@ -27,7 +27,7 @@ export default async function RoomCard(props: RoomCardProps) {
                 </Stack>
                 <Stack>
                     <Typography variant="caption">{props.roomDTO.area} м² ({(props.roomDTO.price / props.roomDTO.area).toFixed(2)} р./м²)</Typography>
-                    <Typography variant="h5">{props.roomDTO.price} р.</Typography>
+                    <Typography variant="h5">{props.roomDTO.price} р./день</Typography>
                 </Stack>
                 <Box>
                     <Typography variant="body2">{props.roomDTO.shortDescription}</Typography>
