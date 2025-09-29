@@ -21,11 +21,11 @@ export default class AuthorizationService {
 
         let user = await this.repo.findByEmail(email);
         if(!user) 
-            throw new ApiException("User not found",ApiError.NotFound)
+            throw new ApiException("Password or user is wrong",ApiError.Forbidden)
         if(!user.password)
             throw new Error("User password is null")
         if(await argon2.verify(user.password,password) === false) 
-            throw new ApiException("Password is wrong",ApiError.Forbidden)
+            throw new ApiException("Password or user is wrong",ApiError.Forbidden)
 
         return user;
     }
