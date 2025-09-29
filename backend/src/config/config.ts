@@ -6,7 +6,7 @@ dotenv.config({quiet: true});
 
 
 
-interface AppConfig {
+interface ApplicationConfig {
     Express: {
         Port: number,
         DefaultApiURL: string
@@ -24,7 +24,7 @@ interface AppConfig {
 
 
 
-const AppConfig: AppConfig = {
+const AppConfig: ApplicationConfig = {
     Express: {
         Port: Number(process.env.EXPRESS_PORT) || 3000,
         DefaultApiURL: process.env.DEFAULT_URL || "http://localhost:3000/"
@@ -39,10 +39,12 @@ const AppConfig: AppConfig = {
         }
     }
 }
-const log = CreateLogger("Settings");
 
-log(`Preparing app settings...`,LogLevel.Info)
-log(`MongoConnectionString: ${process.env.MONGO_DB ? "YES" : "NO"}`,process.env.MONGO_DB ? LogLevel.Debug : LogLevel.Warning)
-log(`Security-Sessions-Secret: ${process.env.SESSION_SECRET ? "YES" : "NO"}`,process.env.SESSION_SECRET ? LogLevel.Debug : LogLevel.Warning)
+if(process.env.NODE_ENV != "test") {
+    const log = CreateLogger("Settings");
 
+    log(`Preparing app settings...`,LogLevel.Info)
+    log(`MongoConnectionString: ${process.env.MONGO_DB ? "YES" : "NO"}`,process.env.MONGO_DB ? LogLevel.Debug : LogLevel.Warning)
+    log(`Security-Sessions-Secret: ${process.env.SESSION_SECRET ? "YES" : "NO"}`,process.env.SESSION_SECRET ? LogLevel.Debug : LogLevel.Warning)
+}
 export { AppConfig }
